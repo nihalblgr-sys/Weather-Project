@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Detection App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #a4a8ac, #531717);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .container h1 {
+            margin: 0 0 10px;
+        }
+
+        .container > p {
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 220px;
+            padding: 15px;
+            border: 0;
+            border-radius: 12px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 15px 28px;
+            border: 0;
+            border-radius: 12px;
+            color: white;
+            background: #0f172a;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #1e293b;
+        }
+
+        .error {
+            margin-top: 20px;
+            color: #7f1d1d;
+        }
+
+        .weather-card {
+            margin-top: 35px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: fade 0.6s ease;
+        }
+
+        .weather-card img {
+            width: 90px;
+        }
+
+        .weather-card h2 {
+            margin: 10px 0;
+            font-size: 32px;
+        }
+
+        .temp {
+            margin: 10px 0;
+            font-size: 55px;
+            font-weight: 700;
+        }
+
+        .condition {
+            margin-bottom: 25px;
+            font-size: 20px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .box {
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .box h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .box p {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            .temp {
+                font-size: 45px;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            button,
+            input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>Weather Detection</h1>
+        <p>Search real-time weather information for any city.</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if weather %}
+            <section class="weather-card">
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/weather/weather-icon.png" alt="Weather icon">
+                <h2>{{ weather.city }},{{ weather.State }},{{ weather.country }}</h2>
+                <div class="temp">{{ weather.temperature }}&deg;C</div>
+                <div class="condition">{{ weather.condition }}</div>
+                <div class="details">
+                    <div class="box">
+                        <h3>Humidity</h3>
+                        <p>{{ weather.humidity }}%</p>
+                    </div>
+                    <div class="box">
+                        <h3>Wind Speed</h3>
+                        <p>{{ weather.wind }} km/h</p>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    </main>
+</body>
+</html>

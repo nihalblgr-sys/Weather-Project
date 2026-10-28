@@ -1,5 +1,6 @@
 import requests
 from django.shortcuts import render
+import os
 
 
 def index(request):
@@ -8,8 +9,7 @@ def index(request):
 
     if request.method == "POST":
         city = request.POST.get("city", "").strip()
-        api_key = "83a909d4bcc8480b94e54449262810"
-
+        api_key = os.environ.get("WEATHER_API_KEY")
         if not city:
             error = "Enter a city name."
         else:
